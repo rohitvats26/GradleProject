@@ -30,4 +30,4 @@ steps:
     TargetFolder: $(Build.ArtifactStagingDirectory)
 
 - upload: $(Build.ArtifactStagingDirectory)
-artifact: drop
+  artifact: drop
