@@ -1,14 +1,21 @@
 package com.example.controller;
 
+import java.io.Console;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.Base64.Encoder;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.springframework.boot.autoconfigure.http.HttpProperties.Encoding;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -64,6 +71,47 @@ public class HelloController {
 			System.out.println("Error");
 		}
 		return new ResponseEntity<String>("welcome user", HttpStatus.OK);
+	}
+
+	@GetMapping("/getToken")
+	@ApiOperation(value = "get The Access Token", response = String.class)
+	public ResponseEntity<String> getToken(@RequestHeader String resourceUri, @RequestHeader String keyName,
+			@RequestHeader String key) {
+
+		String expiry = DateTime.UtcNow.AddDays(10);   
+        using (String encoder = new HMACSHA512(Encoding.UTF8.GetBytes(key)))   
+        {   
+            var dataToSign = id + "\n" + expiry.ToString("O", CultureInfo.InvariantCulture);   
+            var hash = encoder.ComputeHash(Encoding.UTF8.GetBytes(dataToSign));   
+            var signature = Convert.ToBase64String(hash);   
+            var encodedToken = string.Format("SharedAccessSignature uid={0}&ex={1:o}&sn={2}", id, expiry, signature);   
+            Console.WriteLine(encodedToken);   
+        }   
+		return new ResponseEntity<String>(sasToken, HttpStatus.OK);
+	}
+
+	public static String getHMAC256(String key, String input) {
+		Mac sha256_HMAC = null;
+		String hash = null;
+		try {
+			sha256_HMAC = Mac.getInstance("HmacSHA256");
+			SecretKeySpec secret_key = new SecretKeySpec(key.getBytes(), "HmacSHA256");
+			sha256_HMAC.init(secret_key);
+			Encoder encoder = Base64.getEncoder();
+
+			hash = new String(encoder.encode(sha256_HMAC.doFinal(input.getBytes("UTF-8"))));
+
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		return hash;
 	}
 
 }

@@ -19,14 +19,14 @@ public class SwaggerConfig {
 	public Docket productAPI() {
 
 		return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
-				.paths(PathSelectors.any()).build();
+				.paths(PathSelectors.any()).build().apiInfo(metaData());
 	}
 
 	@SuppressWarnings({ "deprecation" })
 	private ApiInfo metaData() {
 
-		return new ApiInfoBuilder().title("Sample API").description("Sample API reference for developers")
-				.contact("example@gmail.com").license("Apache License").licenseUrl("example@gmail.com").version("1.0")
+		return new ApiInfoBuilder().title("RV & PV API").description("Sample API reference for developers")
+				.contact("dontnotreply@gmail.com").license("Apache License").licenseUrl("dontContactUs@gmail.com").version("1.0")
 				.build();
 
 	}
