@@ -1,6 +1,5 @@
 package com.example.controller;
 
-import java.io.Console;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -10,7 +9,6 @@ import java.util.Base64.Encoder;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.springframework.boot.autoconfigure.http.HttpProperties.Encoding;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -78,16 +76,16 @@ public class HelloController {
 	public ResponseEntity<String> getToken(@RequestHeader String resourceUri, @RequestHeader String keyName,
 			@RequestHeader String key) {
 
-		String expiry = DateTime.UtcNow.AddDays(10);   
-        using (String encoder = new HMACSHA512(Encoding.UTF8.GetBytes(key)))   
-        {   
-            var dataToSign = id + "\n" + expiry.ToString("O", CultureInfo.InvariantCulture);   
-            var hash = encoder.ComputeHash(Encoding.UTF8.GetBytes(dataToSign));   
-            var signature = Convert.ToBase64String(hash);   
-            var encodedToken = string.Format("SharedAccessSignature uid={0}&ex={1:o}&sn={2}", id, expiry, signature);   
-            Console.WriteLine(encodedToken);   
-        }   
-		return new ResponseEntity<String>(sasToken, HttpStatus.OK);
+		/*
+		 * String expiry = DateTime.UtcNow.AddDays(10); using (String encoder = new
+		 * HMACSHA512(Encoding.UTF8.GetBytes(key))) { var dataToSign = id + "\n" +
+		 * expiry.ToString("O", CultureInfo.InvariantCulture); var hash =
+		 * encoder.ComputeHash(Encoding.UTF8.GetBytes(dataToSign)); var signature =
+		 * Convert.ToBase64String(hash); var encodedToken =
+		 * string.Format("SharedAccessSignature uid={0}&ex={1:o}&sn={2}", id, expiry,
+		 * signature); Console.WriteLine(encodedToken); }
+		 */
+		return new ResponseEntity<String>("", HttpStatus.OK);
 	}
 
 	public static String getHMAC256(String key, String input) {
