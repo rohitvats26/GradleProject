@@ -85,7 +85,7 @@ public class HelloController {
 		 * string.Format("SharedAccessSignature uid={0}&ex={1:o}&sn={2}", id, expiry,
 		 * signature); Console.WriteLine(encodedToken); }
 		 */
-		return new ResponseEntity<String>("", HttpStatus.OK);
+		return new ResponseEntity<String>("sdff", HttpStatus.OK);
 	}
 
 	public static String getHMAC256(String key, String input) {
