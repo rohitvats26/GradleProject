@@ -10,7 +10,7 @@ public class GitController {
 	@PostMapping("/getSwaggerFile")
 	public String getSwaggerFile(MultipartFile file) {
 
-		return null;
+		return "done";
 	}
 
 }
