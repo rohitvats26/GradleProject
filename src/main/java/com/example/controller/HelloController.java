@@ -1,19 +1,22 @@
 package com.example.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import java.io.File;
+import java.io.IOException;
 import java.util.Base64;
-import java.util.Base64.Encoder;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.eclipse.jgit.api.AddCommand;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.NoFilepatternException;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -73,43 +76,44 @@ public class HelloController {
 
 	@GetMapping("/getToken")
 	@ApiOperation(value = "get The Access Token", response = String.class)
-	public ResponseEntity<String> getToken(@RequestHeader String resourceUri, @RequestHeader String keyName,
-			@RequestHeader String key) {
+	public ResponseEntity<String> getToken() {
 
+		String id = "53d7e14aee681a0034030003";
+		String key = "pXeTVcmdbU9XxH6fPcPlq8Y9D9G3Cdo5Eh2nMSgKj/DWqeSFFXDdmpz5Trv+L2hQNM+nGa704Rf8Z22W9O1jdQ==";
 		/*
 		 * String expiry = DateTime.UtcNow.AddDays(10); using (String encoder = new
-		 * HMACSHA512(Encoding.UTF8.GetBytes(key))) { var dataToSign = id + "\n" +
-		 * expiry.ToString("O", CultureInfo.InvariantCulture); var hash =
-		 * encoder.ComputeHash(Encoding.UTF8.GetBytes(dataToSign)); var signature =
-		 * Convert.ToBase64String(hash); var encodedToken =
-		 * string.Format("SharedAccessSignature uid={0}&ex={1:o}&sn={2}", id, expiry,
+		 * HMACSHA512(Encoding.UTF8.GetBytes(key))) { String dataToSign = id + "\n" +
+		 * expiry.ToString("O", CultureInfo.InvariantCulture); String hash =
+		 * encoder.ComputeHash(Encoding.UTF8.GetBytes(dataToSign)); String signature =
+		 * Base64.ToBase64String(hash); String encodedToken =
+		 * String.format("SharedAccessSignature uid={0}&ex={1:o}&sn={2}", id, expiry,
 		 * signature); Console.WriteLine(encodedToken); }
 		 */
 		return new ResponseEntity<String>("sdff", HttpStatus.OK);
 	}
 
-	public static String getHMAC256(String key, String input) {
-		Mac sha256_HMAC = null;
-		String hash = null;
+	public static void testGit() {
+
+		FileRepositoryBuilder builder = new FileRepositoryBuilder();
+		Repository repository = null;
 		try {
-			sha256_HMAC = Mac.getInstance("HmacSHA256");
-			SecretKeySpec secret_key = new SecretKeySpec(key.getBytes(), "HmacSHA256");
-			sha256_HMAC.init(secret_key);
-			Encoder encoder = Base64.getEncoder();
+			repository = builder.setGitDir(new File("/ds/ds")).readEnvironment().findGitDir().setMustExist(true)
+					.build();
+			Git git = new Git(repository);
+			AddCommand cmd = git.add();
+			cmd.addFilepattern("someDirectory").call();
 
-			hash = new String(encoder.encode(sha256_HMAC.doFinal(input.getBytes("UTF-8"))));
-
-		} catch (InvalidKeyException e) {
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
+		} catch (NoFilepatternException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
+		} catch (GitAPIException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		return hash;
 	}
 
 }

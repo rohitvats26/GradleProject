@@ -26,7 +26,7 @@ public class SwaggerConfig {
 	private ApiInfo metaData() {
 
 		return new ApiInfoBuilder().title("RV & PV API").description("Sample API reference for developers")
-				.contact("dontnotreply@gmail.com").license("Apache License").licenseUrl("dontContactUs@gmail.com").version("1.0")
+				.contact("dontnotreply@gmail.com").license("Apache License").licenseUrl("https://portal.azure.com/").version("1.0")
 				.build();
 
 	}
