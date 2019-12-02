@@ -77,7 +77,7 @@ public class HelloController {
 	@GetMapping("/getToken")
 	@ApiOperation(value = "get The Access Token", response = String.class)
 	public ResponseEntity<String> getToken() {
-
+		System.out.println("rohit");
 		String id = "53d7e14aee681a0034030003";
 		String key = "pXeTVcmdbU9XxH6fPcPlq8Y9D9G3Cdo5Eh2nMSgKj/DWqeSFFXDdmpz5Trv+L2hQNM+nGa704Rf8Z22W9O1jdQ==";
 		/*
@@ -89,7 +89,7 @@ public class HelloController {
 		 * String.format("SharedAccessSignature uid={0}&ex={1:o}&sn={2}", id, expiry,
 		 * signature); Console.WriteLine(encodedToken); }
 		 */
-		return new ResponseEntity<String>("sdff", HttpStatus.OK);
+		return new ResponseEntity<String>("rohit", HttpStatus.OK);
 	}
 
 	public static void testGit() {
