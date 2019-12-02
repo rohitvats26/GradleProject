@@ -75,7 +75,7 @@ public class HelloController {
 	}
 
 	@GetMapping("/getToken")
-	@ApiOperation(value = "get The Access Token", response = String.class)
+	@ApiOperation(value = "get Token", response = String.class)
 	public ResponseEntity<String> getToken() {
 		System.out.println("rohit");
 		String id = "53d7e14aee681a0034030003";
